@@ -854,11 +854,12 @@ func (w *Worker) getAddrDescUtxo(addrDesc bchain.AddressDescriptor, ba *db.AddrB
 									coinbase = true
 								}
 								r = append(r, Utxo{
-									Txid:      bchainTx.Txid,
-									Vout:      int32(i),
-									AmountSat: (*Amount)(&vout.ValueSat),
-									Locktime:  bchainTx.LockTime,
-									Coinbase:  coinbase,
+									Txid:         bchainTx.Txid,
+									Vout:         int32(i),
+									AmountSat:    (*Amount)(&vout.ValueSat),
+									Locktime:     bchainTx.LockTime,
+									Coinbase:     coinbase,
+									ScriptPubKey: vout.ScriptPubKey.Hex,
 								})
 							}
 						}
@@ -905,6 +906,20 @@ func (w *Worker) getAddrDescUtxo(addrDesc bchain.AddressDescriptor, ba *db.AddrB
 							coinbase = true
 						}
 					}
+					bchainTx, height, err := w.txCache.GetTransaction(txid)
+					if err != nil {
+						if err == bchain.ErrTxNotFound {
+							return nil, NewAPIError(fmt.Sprintf("Transaction '%v' not found", txid), true)
+						}
+						return nil, NewAPIError(fmt.Sprintf("Transaction '%v' not found (%v)", txid, err), true)
+					}
+					transaction, err := w.GetTransactionFromBchainTx(bchainTx, height, false, false)
+					if err != nil {
+						if err == bchain.ErrTxNotFound {
+							return nil, NewAPIError(fmt.Sprintf("Transaction '%v' not found", txid), true)
+						}
+						return nil, NewAPIError(fmt.Sprintf("Transaction '%v' not found (%v)", txid, err), true)
+					}
 					r = append(r, Utxo{
 						Txid:          txid,
 						Vout:          utxo.Vout,
@@ -912,6 +927,7 @@ func (w *Worker) getAddrDescUtxo(addrDesc bchain.AddressDescriptor, ba *db.AddrB
 						Height:        int(utxo.Height),
 						Confirmations: confirmations,
 						Coinbase:      coinbase,
+						ScriptPubKey:  transaction.Vout[utxo.Vout].Hex,
 					})
 				}
 				checksum.Sub(&checksum, &utxo.ValueSat)
