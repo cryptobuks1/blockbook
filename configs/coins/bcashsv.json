@@ -48,7 +48,7 @@
     "block_chain": {
       "parse": true,
       "subversion": "/Bitcoin SV:0.2.1/",
-      "address_format": "cashaddr",
+      "address_format": "legacy",
       "mempool_workers": 8,
       "mempool_sub_workers": 2,
       "block_addresses_to_keep": 300,
