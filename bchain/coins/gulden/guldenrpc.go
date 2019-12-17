@@ -78,7 +78,13 @@ func (b *GuldenRPC) GetBlockRaw(hash string) ([]byte, error) {
 		}
 		return nil, errors.Annotatef(res.Error, "hash %v", hash)
 	}
-	return hex.DecodeString(res.Result[80:])
+	var hexTX string
+	if string(res.Result[6]) == "2" {
+		hexTX = res.Result
+	} else {
+		hexTX = res.Result[80:]
+	}
+	return hex.DecodeString(hexTX)
 }
 
 // GetBlock returns block with given hash.

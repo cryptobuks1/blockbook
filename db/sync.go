@@ -291,8 +291,10 @@ func (w *SyncWorker) ConnectBlocksParallel(lower, higher uint32) error {
 		var block *bchain.Block
 	GetBlockLoop:
 		for hh := range hch {
+			// glog.Error("hch", hch)
 			for {
 				block, err = w.chain.GetBlock(hh.hash, hh.height)
+				// glog.Error("hh.hash,", hh.height)
 				if err != nil {
 					// signal came while looping in the error loop
 					if hchClosed.Load() == true {
