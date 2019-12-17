@@ -4,6 +4,7 @@ import (
 	"blockbook/bchain"
 	"blockbook/common"
 	"os"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -390,6 +391,10 @@ func (w *SyncWorker) getBlockChain(out chan blockResult, done chan struct{}) {
 		}
 		block, err := w.chain.GetBlock(hash, height)
 		if err != nil {
+			// dirty hack for double spend
+			if strings.Contains(err.Error(), "unexpected EOF") {
+				break
+			}
 			if err == bchain.ErrBlockNotFound {
 				break
 			}
