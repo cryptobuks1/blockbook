@@ -665,7 +665,7 @@ func (w *Worker) getAddrDescAndNormalizeAddress(address string) (bchain.AddressD
 }
 
 // GetAddress computes address value and gets transactions for given address
-func (w *Worker) GetAddress(address string, page int, txsOnPage int, option AccountDetails, filter *AddressFilter) (*Address, error) {
+func (w *Worker) GetAddress(address string, page int, txsOnPage int, option AccountDetails, filter *AddressFilter, noHex bool) (*Address, error) {
 	start := time.Now()
 	page--
 	if page < 0 {
@@ -772,6 +772,9 @@ func (w *Worker) GetAddress(address string, page int, txsOnPage int, option Acco
 				tx, err := w.txFromTxid(txid, bestheight, option, nil)
 				if err != nil {
 					return nil, err
+				}
+				if noHex {
+					tx.Hex = ""
 				}
 				txs = append(txs, tx)
 			}
