@@ -4,6 +4,7 @@ import (
 	"blockbook/bchain"
 	"blockbook/common"
 	"os"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -291,8 +292,10 @@ func (w *SyncWorker) ConnectBlocksParallel(lower, higher uint32) error {
 		var block *bchain.Block
 	GetBlockLoop:
 		for hh := range hch {
+			// glog.Error("hch", hch)
 			for {
 				block, err = w.chain.GetBlock(hh.hash, hh.height)
+				// glog.Error("hh.hash,", hh.height)
 				if err != nil {
 					// signal came while looping in the error loop
 					if hchClosed.Load() == true {
@@ -388,6 +391,10 @@ func (w *SyncWorker) getBlockChain(out chan blockResult, done chan struct{}) {
 		}
 		block, err := w.chain.GetBlock(hash, height)
 		if err != nil {
+			// dirty hack for double spend
+			if strings.Contains(err.Error(), "unexpected EOF") {
+				break
+			}
 			if err == bchain.ErrBlockNotFound {
 				break
 			}
