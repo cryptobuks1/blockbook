@@ -1282,15 +1282,18 @@ func (d *RocksDB) disconnectTxAddresses(wb *gorocksdb.WriteBatch, height uint32,
 // DisconnectBlockRangeBitcoinType removes all data belonging to blocks in range lower-higher
 // it is able to disconnect only blocks for which there are data in the blockTxs column
 func (d *RocksDB) DisconnectBlockRangeBitcoinType(lower uint32, higher uint32) error {
+	if lower == higher {
+		lower = lower - 5
+	}
 	blocks := make([][]blockTxs, higher-lower+1)
 	for height := lower; height <= higher; height++ {
 		blockTxs, err := d.getBlockTxs(height)
 		if err != nil {
 			return err
 		}
-		if len(blockTxs) == 0 {
-			return errors.Errorf("Cannot disconnect blocks with height %v and lower. It is necessary to rebuild index.", height)
-		}
+		// if len(blockTxs) == 0 {
+		// 	return errors.Errorf("Cannot disconnect blocks with height %v and lower. It is necessary to rebuild index.", height)
+		// }
 		blocks[height-lower] = blockTxs
 	}
 	wb := gorocksdb.NewWriteBatch()
