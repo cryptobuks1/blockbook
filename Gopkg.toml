@@ -59,7 +59,7 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/tecbot/gorocksdb"
+  name = "github.com/linxGnu/grocksdb"
 
 [[constraint]]
   name = "github.com/ethereum/go-ethereum"

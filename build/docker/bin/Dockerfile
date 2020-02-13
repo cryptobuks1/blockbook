@@ -9,8 +9,8 @@ RUN apt-get update && \
                        liblz4-dev graphviz && \
     apt-get clean
 
-ENV GOLANG_VERSION=go1.12.4.linux-amd64
-ENV ROCKSDB_VERSION=v5.18.3
+ENV GOLANG_VERSION=go1.13.4.linux-amd64
+ENV ROCKSDB_VERSION=v6.4.6
 ENV GOPATH=/go
 ENV PATH=$PATH:$GOPATH/bin
 ENV CGO_CFLAGS="-I/opt/rocksdb/include"
@@ -41,7 +41,7 @@ RUN \
     cleanup() { rm -rf $GOPATH/src/blockbook; } && \
     trap cleanup EXIT && \
     cd $GOPATH/src && \
-    git clone https://github.com/guardaco/blockbook.git -b develop && \
+    git clone https://github.com/guardaco/blockbook.git -b futures/rocksdb6 && \
     cd blockbook && \
     dep ensure -vendor-only && \
     cp -r vendor /build/vendor
