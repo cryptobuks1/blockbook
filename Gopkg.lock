@@ -292,7 +292,7 @@
     "github.com/prometheus/client_golang/prometheus",
     "github.com/prometheus/client_golang/prometheus/promhttp",
     "github.com/schancel/cashaddr-converter/address",
-    "github.com/tecbot/gorocksdb",
+    "github.com/linxGnu/grocksdb",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
