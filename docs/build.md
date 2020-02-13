@@ -214,7 +214,7 @@ cd rocksdb
 CFLAGS=-fPIC CXXFLAGS=-fPIC make release
 ```
 
-Setup variables for gorocksdb: https://github.com/tecbot/gorocksdb
+Setup variables for gorocksdb: https://github.com/linxGnu/grocksdb
 
 ```
 export CGO_CFLAGS="-I/path/to/rocksdb/include"

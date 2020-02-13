@@ -227,7 +227,7 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/tecbot/gorocksdb"
+  name = "github.com/linxGnu/grocksdb"
   packages = ["."]
   revision = "214b6b7bc0f06812ab5602fdc502a3e619916f38"
 
