@@ -229,7 +229,7 @@
   branch = "master"
   name = "github.com/linxGnu/grocksdb"
   packages = ["."]
-  revision = "214b6b7bc0f06812ab5602fdc502a3e619916f38"
+  revision = "467d1dd657d2aa98a7b57c812e55f5a10f4933ae"
 
 [[projects]]
   branch = "master"
