@@ -2,6 +2,7 @@ package coins
 
 import (
 	"blockbook/bchain"
+	"blockbook/bchain/coins/aryacoin"
 	"blockbook/bchain/coins/bch"
 	"blockbook/bchain/coins/bellcoin"
 	"blockbook/bchain/coins/btc"
@@ -113,6 +114,7 @@ func init() {
 	BlockChainFactories["Creamcoin"] = creamcoin.NewCreamCoinRPC
 	BlockChainFactories["Gulden"] = gulden.NewGuldenRPC
 	BlockChainFactories["Komodo"] = kmd.NewKmdRPC
+	BlockChainFactories["Aryacoin"] = aryacoin.NewAryaCoinRPC
 }
 
 // GetCoinNameFromConfig gets coin name and coin shortcut from config file

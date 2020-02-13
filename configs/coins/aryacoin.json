@@ -1,9 +1,9 @@
 {
   "coin": {
-    "name": "Creamcoin",
-    "shortcut": "CRM",
-    "label": "Creamcoin",
-    "alias": "creamcoin"
+    "name": "Aryacoin",
+    "shortcut": "AYA",
+    "label": "Aryacoin",
+    "alias": "aryacoin"
   },
   "ports": {
     "backend_rpc": 8052,
@@ -44,8 +44,8 @@
     }
   },
   "blockbook": {
-    "package_name": "blockbook-creamcoin",
-    "system_user": "blockbook-creamcoin",
+    "package_name": "blockbook-aryacoin",
+    "system_user": "blockbook-aryacoin",
     "internal_binding_template": ":{{.Ports.BlockbookInternal}}",
     "public_binding_template": ":{{.Ports.BlockbookPublic}}",
     "explorer_url": "",
@@ -55,7 +55,7 @@
       "mempool_workers": 8,
       "mempool_sub_workers": 2,
       "block_addresses_to_keep": 300,
-      "xpub_magic": 72579324,
+      "xpub_magic": 1082665953,
       "additional_params": {}
     }
   }
