@@ -41,7 +41,7 @@ RUN \
     trap cleanup EXIT && \
     mkdir -p $GOPATH/src/github.com/trezor && \
     cd $GOPATH/src/github.com/trezor && \
-    git clone https://github.com/trezor/blockbook.git && \
+    git clone -b decred https://github.com/dajohi/blockbook.git && \
     cd blockbook && \
     env GO111MODULE=on go mod vendor && \
     cp -r vendor /build/vendor
