@@ -302,6 +302,14 @@ func mainWithExitCode() int {
 	}
 	go storeInternalStateLoop()
 
+	if publicServer != nil {
+		// start full public interface
+		callbacksOnNewBlock = append(callbacksOnNewBlock, publicServer.OnNewBlock)
+		callbacksOnNewTxAddr = append(callbacksOnNewTxAddr, publicServer.OnNewTxAddr)
+		callbacksOnNewFiatRatesTicker = append(callbacksOnNewFiatRatesTicker, publicServer.OnNewFiatRatesTicker)
+		publicServer.ConnectFullPublicInterface()
+	}
+
 	if *blockFrom >= 0 {
 		if *blockUntil < 0 {
 			*blockUntil = *blockFrom
