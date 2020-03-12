@@ -87,8 +87,37 @@
                         <a target="_blank" href="https://swapzone.io/?from=ltc&to=btc" class="nav-link">Best LTC price</a>
                     </li>
                 </ul>
+                {{ else if eq .CoinLabel "Bitcoin" }}
+                <ul class="navbar-nav flex-row ml-md-auto d-none d-lg-flex ">
+                    <li class="nav-item">
+                        <a target="_blank" href="https://swapzone.io/?from=btc&to=eth" class="nav-link">Best BTC price</a>
+                    </li>
+                </ul>
+                {{ else if eq .CoinLabel "Komodo" }}
+                <ul class="navbar-nav flex-row ml-md-auto d-none d-lg-flex ">
+                    <li class="nav-item">
+                        <a target="_blank" href="https://swapzone.io/?from=kmd&to=btc" class="nav-link">Best KMD price</a>
+                    </li>
+                </ul>
+                {{ else if eq .CoinLabel "Ethereum Classic" }}
+                <ul class="navbar-nav flex-row ml-md-auto d-none d-lg-flex ">
+                    <li class="nav-item">
+                        <a target="_blank" href="https://swapzone.io/?from=etc&to=btc" class="nav-link">Best ETC price</a>
+                    </li>
+                </ul>
+                {{ else if eq .CoinLabel "Dogecoin" }}
+                <ul class="navbar-nav flex-row ml-md-auto d-none d-lg-flex ">
+                    <li class="nav-item">
+                        <a target="_blank" href="https://swapzone.io/?from=doge&to=btc" class="nav-link">Best DOGE price</a>
+                    </li>
+                </ul>
+                {{ else if eq .CoinLabel "Zcash" }}
+                <ul class="navbar-nav flex-row ml-md-auto d-none d-lg-flex ">
+                    <li class="nav-item">
+                        <a target="_blank" href="https://swapzone.io/?from=zec&to=btc" class="nav-link">Best ZEC price</a>
+                    </li>
+                </ul>
                 {{- end -}}
-
             </nav>
         </div>
     </header>
