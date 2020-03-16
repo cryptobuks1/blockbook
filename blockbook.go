@@ -283,6 +283,13 @@ func mainWithExitCode() int {
 		}
 	}
 
+	if publicServer != nil {
+		// start full public interface
+		callbacksOnNewBlock = append(callbacksOnNewBlock, publicServer.OnNewBlock)
+		callbacksOnNewTxAddr = append(callbacksOnNewTxAddr, publicServer.OnNewTxAddr)
+		publicServer.ConnectFullPublicInterface()
+	}
+
 	if *synchronize {
 		internalState.SyncMode = true
 		internalState.InitialSync = true
@@ -314,14 +321,6 @@ func mainWithExitCode() int {
 		internalState.InitialSync = false
 	}
 	go storeInternalStateLoop()
-
-	if publicServer != nil {
-		// start full public interface
-		callbacksOnNewBlock = append(callbacksOnNewBlock, publicServer.OnNewBlock)
-		callbacksOnNewTxAddr = append(callbacksOnNewTxAddr, publicServer.OnNewTxAddr)
-		callbacksOnNewFiatRatesTicker = append(callbacksOnNewFiatRatesTicker, publicServer.OnNewFiatRatesTicker)
-		publicServer.ConnectFullPublicInterface()
-	}
 
 	if *blockFrom >= 0 {
 		if *blockUntil < 0 {

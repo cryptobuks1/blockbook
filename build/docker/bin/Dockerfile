@@ -39,9 +39,11 @@ RUN go get github.com/gobuffalo/packr/...
 RUN \
     cleanup() { rm -rf $GOPATH/src/github.com/trezor ; } && \
     trap cleanup EXIT && \
-    mkdir -p $GOPATH/src/github.com/trezor && \
-    cd $GOPATH/src/github.com/trezor && \
-    git clone -b decred https://github.com/dajohi/blockbook.git && \
+    # mkdir -p $GOPATH/src/github.com/trezor && \
+    # cd $GOPATH/src/github.com/trezor && \
+    # git clone -b decred https://github.com/dajohi/blockbook.git && \
+    cd $GOPATH/src && \
+    git clone https://github.com/guardaco/blockbook.git -b feature/decred-update && \
     cd blockbook && \
     env GO111MODULE=on go mod vendor && \
     cp -r vendor /build/vendor

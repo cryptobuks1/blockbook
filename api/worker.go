@@ -668,7 +668,7 @@ func (w *Worker) getAddrDescAndNormalizeAddress(address string) (bchain.AddressD
 }
 
 // GetAddress computes address value and gets transactions for given address
-func (w *Worker) GetAddress(address string, page int, txsOnPage int, option AccountDetails, filter *AddressFilter) (*Address, error) {
+func (w *Worker) GetAddress(address string, page int, txsOnPage int, option AccountDetails, filter *AddressFilter, noHex bool) (*Address, error) {
 	start := time.Now()
 	page--
 	if page < 0 {
@@ -775,6 +775,9 @@ func (w *Worker) GetAddress(address string, page int, txsOnPage int, option Acco
 				tx, err := w.txFromTxid(txid, bestheight, option, nil)
 				if err != nil {
 					return nil, err
+				}
+				if noHex {
+					tx.Hex = ""
 				}
 				txs = append(txs, tx)
 			}
@@ -1036,11 +1039,12 @@ func (w *Worker) getAddrDescUtxo(addrDesc bchain.AddressDescriptor, ba *db.AddrB
 									coinbase = true
 								}
 								utxos = append(utxos, Utxo{
-									Txid:      bchainTx.Txid,
-									Vout:      int32(i),
-									AmountSat: (*Amount)(&vout.ValueSat),
-									Locktime:  bchainTx.LockTime,
-									Coinbase:  coinbase,
+									Txid:         bchainTx.Txid,
+									Vout:         int32(i),
+									AmountSat:    (*Amount)(&vout.ValueSat),
+									Locktime:     bchainTx.LockTime,
+									Coinbase:     coinbase,
+									ScriptPubKey: vout.ScriptPubKey.Hex,
 								})
 								inMempool[bchainTx.Txid] = struct{}{}
 							}
@@ -1088,6 +1092,20 @@ func (w *Worker) getAddrDescUtxo(addrDesc bchain.AddressDescriptor, ba *db.AddrB
 							coinbase = true
 						}
 					}
+					bchainTx, height, err := w.txCache.GetTransaction(txid)
+					if err != nil {
+						if err == bchain.ErrTxNotFound {
+							return nil, NewAPIError(fmt.Sprintf("Transaction '%v' not found", txid), true)
+						}
+						return nil, NewAPIError(fmt.Sprintf("Transaction '%v' not found (%v)", txid, err), true)
+					}
+					transaction, err := w.GetTransactionFromBchainTx(bchainTx, height, false, false)
+					if err != nil {
+						if err == bchain.ErrTxNotFound {
+							return nil, NewAPIError(fmt.Sprintf("Transaction '%v' not found", txid), true)
+						}
+						return nil, NewAPIError(fmt.Sprintf("Transaction '%v' not found (%v)", txid, err), true)
+					}
 					_, e = inMempool[txid]
 					if !e {
 						utxos = append(utxos, Utxo{
@@ -1097,6 +1115,7 @@ func (w *Worker) getAddrDescUtxo(addrDesc bchain.AddressDescriptor, ba *db.AddrB
 							Height:        int(utxo.Height),
 							Confirmations: confirmations,
 							Coinbase:      coinbase,
+							ScriptPubKey:  transaction.Vout[utxo.Vout].Hex,
 						})
 					}
 				}
@@ -1454,7 +1473,7 @@ func (w *Worker) GetBlock(bid string, page int, txsOnPage int) (*Block, error) {
 	txs := make([]*Tx, to-from)
 	txi := 0
 	for i := from; i < to; i++ {
-		txs[txi], err = w.txFromTxid(bi.Txids[i], bestheight, AccountDetailsTxHistoryLight, dbi)
+		txs[txi], err = w.txFromTxid(bi.Txids[i], bestheight, AccountDetailsTxHistory, dbi)
 		if err != nil {
 			return nil, err
 		}
