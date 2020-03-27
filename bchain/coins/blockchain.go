@@ -5,6 +5,8 @@ import (
 	"blockbook/bchain/coins/aryacoin"
 	"blockbook/bchain/coins/bch"
 	"blockbook/bchain/coins/bellcoin"
+	"blockbook/bchain/coins/bitcore"
+	"blockbook/bchain/coins/bitzeny"
 	"blockbook/bchain/coins/btc"
 	"blockbook/bchain/coins/btg"
 	"blockbook/bchain/coins/cpuchain"
@@ -30,6 +32,7 @@ import (
 	"blockbook/bchain/coins/myriad"
 	"blockbook/bchain/coins/namecoin"
 	"blockbook/bchain/coins/nuls"
+	"blockbook/bchain/coins/omotenashicoin"
 	"blockbook/bchain/coins/pivx"
 	"blockbook/bchain/coins/polis"
 	"blockbook/bchain/coins/qtum"
@@ -70,7 +73,7 @@ func init() {
 	BlockChainFactories["Ethereum Classic"] = eth.NewEthereumRPC
 	BlockChainFactories["Ethereum Testnet Ropsten"] = eth.NewEthereumRPC
 	BlockChainFactories["Bcash"] = bch.NewBCashRPC
-    BlockChainFactories["BcashSV"] = bch.NewBCashRPC
+	BlockChainFactories["BcashSV"] = bch.NewBCashRPC
 	BlockChainFactories["Bcash Testnet"] = bch.NewBCashRPC
 	BlockChainFactories["Bgold"] = btg.NewBGoldRPC
 	BlockChainFactories["Dash"] = dash.NewDashRPC
@@ -118,6 +121,10 @@ func init() {
 	BlockChainFactories["Gulden"] = gulden.NewGuldenRPC
 	BlockChainFactories["Komodo"] = kmd.NewKmdRPC
 	BlockChainFactories["Aryacoin"] = aryacoin.NewAryaCoinRPC
+	BlockChainFactories["Bitcore"] = bitcore.NewBitcoreRPC
+	BlockChainFactories["Omotenashicoin"] = omotenashicoin.NewOmotenashiCoinRPC
+	BlockChainFactories["Omotenashicoin Testnet"] = omotenashicoin.NewOmotenashiCoinRPC
+	BlockChainFactories["BitZeny"] = bitzeny.NewBitZenyRPC
 }
 
 // GetCoinNameFromConfig gets coin name and coin shortcut from config file
